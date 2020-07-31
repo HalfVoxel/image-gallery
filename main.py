@@ -48,7 +48,6 @@ def find_images():
             size = image.size
 
             if orientation in exif and (exif[orientation] in [6, 8]):
-                print("Rotating")
                 size = (size[1], size[0])
 
             date = datetime.strptime(image.getexif()[36867], r"%Y:%m:%d %H:%M:%S")
@@ -57,9 +56,8 @@ def find_images():
     images.sort(key=lambda x: x[2], reverse=True)
     res = groupby(images, key=lambda x: datetime(year=x[2].year, month=x[2].month, day=x[2].day))
     res = [(x[0], list(x[1])) for x in res]
-    print(res[0])
     return res
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
