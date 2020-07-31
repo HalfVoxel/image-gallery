@@ -11,7 +11,9 @@
                 <ul class="gallery-group">
                     {% for image in group[1] %}
                         <div>
-                            <img width="{{ image[1][0] * image_height/image[1][1] }}px" height="300px" class="lazy" data-src="static/thumbnails/{{ image[0] }}">
+                            <a href="static/{{ image[0] }}">
+                                <img width="{{ image[1][0] * image_height/image[1][1] }}px" height="300px" class="lazy" data-src="static/thumbnails/{{ image[0] }}">
+                            </a>
                         </div>
                     {% endfor %}
                 </ul>
