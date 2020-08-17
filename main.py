@@ -8,6 +8,7 @@ from datetime import datetime
 from jinja2 import Template
 from PIL import Image, ExifTags
 from itertools import groupby
+import glob
 
 image_folders = ["images1", "images2"]
 
@@ -81,11 +82,11 @@ def find_images():
     images = []
 
     for folder in image_folders:
-        for file in os.listdir("static/" + folder):
-            if not any(file.endswith(ext) for ext in image_extensions):
+        for path in glob.glob("static/" + folder + "/**", recursive=True):
+            if not any(path.endswith(ext) for ext in image_extensions):
                 continue
 
-            path = folder + "/" + file
+            path = path.replace("static/", "")
             if path in cached_image_info:
                 images.append(cached_image_info[path])
             else:
