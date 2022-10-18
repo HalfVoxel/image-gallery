@@ -9,6 +9,7 @@ from jinja2 import Template
 from PIL import Image, ExifTags
 from itertools import groupby
 import glob
+import exifread
 
 image_folders = ["images1", "images2"]
 
@@ -106,7 +107,14 @@ def find_images():
                     if OrientationKey in exif and (exif[OrientationKey] in [6, 8]):
                         thumbnail_size = (thumbnail_size[1], thumbnail_size[0])
 
-                date = datetime.strptime(image.getexif()[36867], r"%Y:%m:%d %H:%M:%S")
+                with open("static/" + path, 'rb') as f:
+                    exifdata = exifread.process_file(f, details=False)
+                
+                if 'EXIF DateTimeOriginal' in exifdata:
+                    date = datetime.strptime(exifdata['EXIF DateTimeOriginal'].values, r"%Y:%m:%d %H:%M:%S")
+                else:
+                    date = datetime.now()
+
                 item = (path, thumbnail_size, date)
 
                 if accurate:
